@@ -9,9 +9,14 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
         required: true,
-        match: [/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,63}$/, "Try again. Please enter a valid email",]
+        unique: true,
+        validate: {
+            validator: function(v) {
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
+            },
+        message: props => `${props.value} is not a valid email address!`
+        }
     },
     thoughts: [
         {
